@@ -3,65 +3,64 @@
 - ### _Como Configurar um Ambiente de Big Data no Ubuntu 24 LTS com Hadoop e Criar uma Aplicação Simples_
 Este tutorial vai guiá-lo através do processo de instalação e configuração do **Apache Hadoop** no Ubuntu 24 LTS, além de ensinar como criar uma aplicação simples de Big Data: um clássico **Word Count** (Contagem de Palavras). Esse exemplo mostrará como o Hadoop processa grandes volumes de dados em paralelo usando o modelo **MapReduce**.
 
-1. #### **Pré-requisitos**
+<br>1. **Pré-requisitos**
   - Ter um sistema Ubuntu 24 LTS.
   - Acesso à linha de comando (Terminal).
   - Conhecimento básico de Java (opcional, mas recomendado).
 
-2. #### **Atualizar o sistema e instalar o Java**
-  - Hadoop precisa do Java para funcionar, então a primeira coisa que faremos é garantir que o sistema está atualizado e que o Java está instalado.
+<br>2.  **Atualizar o sistema e instalar o Java**
 
-**Atualize o sistema:** No terminal, execute o seguinte comando:<br>
+Hadoop precisa do Java para funcionar, então a primeira coisa que faremos é garantir que o sistema está atualizado e que o Java está instalado.<br></br>
 
-``sudo apt update && sudo apt upgrade``
+- **Atualize o sistema:** No terminal, execute o seguinte comando.
 
-**Instale o Java (OpenJDK 11):** O Hadoop funciona bem com o Java 11, então vamos instalá-lo:
+``sudo apt update && sudo apt upgrade``<br></br>
 
-``sudo apt install openjdk-11-jdk``
+- **Instale o Java (OpenJDK 11):** O Hadoop funciona bem com o *Java 11*, então vamos instalá-lo.
 
-**Verifique a instalação do Java:** Certifique-se de que o Java foi instalado corretamente:
+``sudo apt install openjdk-11-jdk``<br></br>
+
+**Verifique a instalação do Java:** Certifique-se de que o Java foi instalado corretamente.
 
 ``java -version``
 
-A saída deverá exibir algo como openjdk version "11.0.x".
+A saída deverá exibir algo como "openjdk version 11.0.x".<br></br>
 
-3. #### **Baixar e configurar o Hadoop**
-  - Agora vamos instalar o Hadoop. Para este exemplo, utilizaremos a versão mais recente disponível.
+3. **Baixar e configurar o Hadoop**
+  - Agora vamos instalar o *Hadoop*. Para este exemplo, utilizaremos a versão mais recente disponível.<br></br>
 
-Baixar o Hadoop: No terminal, execute o comando abaixo para baixar o Hadoop:
+**No terminal, execute o comando abaixo para baixar o *Hadoop*:**
 
-``wget https://dlcdn.apache.org/hadoop/common/hadoop-3.3.6/hadoop-3.3.6.tar.gz``
+``wget https://dlcdn.apache.org/hadoop/common/hadoop-3.3.6/hadoop-3.3.6.tar.gz``<br></br>
 
-Extrair o arquivo baixado: Descompacte o arquivo para ter acesso ao conteúdo do Hadoop:
+**Extrair o arquivo baixado:** Descompacte o arquivo para ter acesso ao conteúdo do *Hadoop*.
 
-bash
-Copiar código
-tar -xvzf hadoop-3.3.6.tar.gz
-Configurar as variáveis de ambiente: Agora, precisamos configurar as variáveis de ambiente para que o sistema saiba onde encontrar os binários do Hadoop. Abra o arquivo .bashrc no editor de texto:
+``tar -xvzf hadoop-3.3.6.tar.gz``<br></br>
 
-bash
-Copiar código
-nano ~/.bashrc
-No final do arquivo, adicione as seguintes linhas:
+**Configurar as variáveis de ambiente:** Agora, precisamos configurar as variáveis de ambiente para que o sistema saiba onde encontrar os binários do *Hadoop*. Abra o arquivo *.bashrc* no editor de texto.
 
-bash
-Copiar código
-export HADOOP_HOME=/caminho/para/hadoop-3.3.6
-export PATH=$PATH:$HADOOP_HOME/bin
-Substitua /caminho/para/hadoop-3.3.6 pelo diretório onde você extraiu o Hadoop. Em seguida, salve o arquivo e feche o editor.
+``nano ~/.bashrc`` ou ``vim ~/.bashrc``<br></br>
 
-Atualizar as variáveis de ambiente: Para aplicar as mudanças, execute o comando:
+**Caso você não tenha o editor de texto  "vim" instalado:** Abra o terminal e execute o comando.
 
-bash
-Copiar código
-source ~/.bashrc
+``sudo apt install vim``<br></br>
+
+**No final do arquivo, adicione as seguintes linhas:**
+
+``export HADOOP_HOME=/caminho/para/hadoop-3.3.6``<br>
+``export PATH=$PATH:$HADOOP_HOME/bin``
+
+Substitua ***/caminho/para/hadoop-3.3.6*** pelo diretório onde você extraiu o Hadoop (Exemplo:  /home/gustavo/hadoop-3.3.6). Em seguida, salve o arquivo e feche o editor.#################################################################
+
+**Atualizar as variáveis de ambiente:** Para aplicar as mudanças, execute o comando:
+
+``source ~/.bashrc``<br>
+
 Passo 3: Configurar o HDFS (Hadoop Distributed File System)
 O HDFS é o sistema de arquivos distribuído do Hadoop, onde você armazenará seus dados para processamento.
 
 Criar o diretório de entrada no HDFS: Antes de rodar o exemplo de contagem de palavras, precisamos colocar o arquivo de entrada no HDFS. Primeiro, crie um diretório:
 
-bash
-Copiar código
 hdfs dfs -mkdir /input
 Criar um arquivo de entrada: Vamos criar um arquivo de texto simples para usar no exemplo. No terminal, execute:
 
