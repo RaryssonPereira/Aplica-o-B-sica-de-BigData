@@ -14,85 +14,127 @@ Hadoop precisa do Java para funcionar, então a primeira coisa que faremos é ga
 
 - **Atualize o sistema:** No terminal, execute o seguinte comando.
 
-``sudo apt update && sudo apt upgrade``<br></br>
+```
+sudo apt update && sudo apt upgrade
+```
+<br></br>
 
 - **Instale o Java (OpenJDK 11):** O Hadoop funciona bem com o *Java 11*, então vamos instalá-lo.
 
-``sudo apt install openjdk-11-jdk``<br></br>
+```
+sudo apt install openjdk-11-jdk
+```
+<br></br>
 
-**Verifique a instalação do Java:** Certifique-se de que o Java foi instalado corretamente.
+- **Verifique a instalação do Java:** Certifique-se de que o Java foi instalado corretamente.
 
-``java -version``
+```
+java -version
+```
 
-A saída deverá exibir algo como "openjdk version 11.0.x".<br></br>
+A saída deverá exibir algo como **"openjdk version 11.0.x"**.<br></br>
 
 3. **Baixar e configurar o Hadoop**
-  - Agora vamos instalar o *Hadoop*. Para este exemplo, utilizaremos a versão mais recente disponível.<br></br>
 
-**No terminal, execute o comando abaixo para baixar o *Hadoop*:**
+Agora vamos instalar o *Hadoop*. Para este exemplo, utilizaremos a versão mais recente disponível.<br></br>
 
-``wget https://dlcdn.apache.org/hadoop/common/hadoop-3.3.6/hadoop-3.3.6.tar.gz``<br></br>
+- **No terminal, execute o comando abaixo para baixar o *Hadoop*:**
 
-**Extrair o arquivo baixado:** Descompacte o arquivo para ter acesso ao conteúdo do *Hadoop*.
+```
+wget https://dlcdn.apache.org/hadoop/common/hadoop-3.3.6/hadoop-3.3.6.tar.gz
+```
+<br></br>
 
-``tar -xvzf hadoop-3.3.6.tar.gz``<br></br>
+- **Extrair o arquivo baixado:** Descompacte o arquivo para ter acesso ao conteúdo do *Hadoop*.
 
-**Configurar as variáveis de ambiente:** Agora, precisamos configurar as variáveis de ambiente para que o sistema saiba onde encontrar os binários do *Hadoop*. Abra o arquivo *.bashrc* no editor de texto.
+```
+tar -xvzf hadoop-3.3.6.tar.gz
+```
+<br></br>
+
+- **Configurar as variáveis de ambiente:** Agora, precisamos configurar as variáveis de ambiente para que o sistema saiba onde encontrar os binários do *Hadoop*. Abra o arquivo *.bashrc* no editor de texto.
 
 ``nano ~/.bashrc`` ou ``vim ~/.bashrc``<br></br>
+<br></br>
 
-**Caso você não tenha o editor de texto  "vim" instalado:** Abra o terminal e execute o comando.
+- **Caso você não tenha o editor de texto  "vim" instalado:** Abra o terminal e execute o comando.
 
-``sudo apt install vim``<br></br>
+```
+sudo apt install vim
+```
+<br></br>
 
-**No final do arquivo, adicione as seguintes linhas:**
+- **No final do arquivo, adicione as seguintes linhas:**
 
-``export HADOOP_HOME=/caminho/para/hadoop-3.3.6``<br>
-``export PATH=$PATH:$HADOOP_HOME/bin``
+```
+export HADOOP_HOME=/caminho/para/hadoop-3.3.6
+export PATH=$PATH:$HADOOP_HOME/bin
+```
 
-Substitua ***/caminho/para/hadoop-3.3.6*** pelo diretório onde você extraiu o Hadoop (Exemplo:  /home/gustavo/hadoop-3.3.6). Em seguida, salve o arquivo e feche o editor.#################################################################
+Substitua ***/caminho/para/hadoop-3.3.6*** pelo diretório onde você extraiu o Hadoop (Exemplo:  /home/gustavo/hadoop-3.3.6). Em seguida, salve o arquivo e feche o editor.<br></br>
 
-**Atualizar as variáveis de ambiente:** Para aplicar as mudanças, execute o comando:
+- **Também devemos adicionar as seguintes linhas ao final do arquivo, substituindo pelo caminho correto do Java:**
 
-``source ~/.bashrc``<br>
+```
+export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
+export PATH=$PATH:$JAVA_HOME/bin
+```
+<br></br>
 
-Passo 3: Configurar o HDFS (Hadoop Distributed File System)
-O HDFS é o sistema de arquivos distribuído do Hadoop, onde você armazenará seus dados para processamento.
+- **Atualizar as variáveis de ambiente:** Para aplicar as mudanças, execute o comando:
 
-Criar o diretório de entrada no HDFS: Antes de rodar o exemplo de contagem de palavras, precisamos colocar o arquivo de entrada no HDFS. Primeiro, crie um diretório:
+```
+source ~/.bashrc
+```
+<br></br>
 
+4. **Configurar o HDFS (Hadoop Distributed File System)**
+
+O HDFS é o sistema de arquivos distribuído do Hadoop, onde você armazenará seus dados para processamento.<br></br>
+
+- **Criar o diretório de entrada no HDFS:** Antes de rodar o exemplo de contagem de palavras, precisamos colocar o arquivo de entrada no HDFS. Primeiro, crie um diretório.
+
+```
 hdfs dfs -mkdir /input
-Criar um arquivo de entrada: Vamos criar um arquivo de texto simples para usar no exemplo. No terminal, execute:
+```
 
-bash
-Copiar código
+***AVISO:*** O comando **"hdfs dfs -mkdir /input"** está criando um diretório dentro do sistema de arquivos distribuído do **Hadoop (HDFS)**, e não no seu sistema de arquivos local. Portanto, o caminho **/input** refere-se ao diretório no **HDFS**, que é o ambiente virtual onde o Hadoop gerencia seus dados.<br></br>
+
+- **Criar um arquivo de entrada:** Vamos criar um arquivo de texto simples para usar no exemplo. No terminal, execute.
+
+```
 nano input.txt
-Adicione o seguinte conteúdo ao arquivo:
+```
+<br></br>
 
-text
-Copiar código
+- **Adicione o seguinte conteúdo ao arquivo:**
+
+```
 Hadoop is an open-source framework
 Hadoop is widely used for Big Data
 Hadoop processes large datasets
-Salve e feche o arquivo.
+```
 
-Enviar o arquivo para o HDFS: Agora, coloque o arquivo no diretório de entrada do HDFS:
+Salve e feche o arquivo.<br></br>
 
-bash
-Copiar código
+- **Enviar o arquivo para o HDFS:** Agora, coloque o arquivo no diretório de entrada do HDFS.
+
+```
 hdfs dfs -put input.txt /input
-Passo 4: Criar a aplicação Word Count com Hadoop
-Agora que temos o arquivo de entrada no HDFS, vamos criar uma aplicação que conta a frequência de cada palavra usando o modelo MapReduce.
+```
+<br></br>
 
-Escrever o código Java para o Word Count: Crie um arquivo Java para a aplicação de contagem de palavras:
+<br>5. **Criar a aplicação Word Count com Hadoop**
 
-bash
-Copiar código
-nano WordCount.java
-Cole o seguinte código Java, que define o Mapper e o Reducer para o Hadoop:
+Agora que temos o arquivo de entrada no HDFS, vamos criar uma aplicação que conta a frequência de cada palavra usando o modelo MapReduce.<br></br>
 
-java
-Copiar código
+- **Escrever o código Java para o Word Count:** Crie um arquivo Java para a aplicação de contagem de palavras.
+
+``nano WordCount.java`` ou ``vim WordCount.java``<br></br>
+
+- **Cole o seguinte código Java, que define o Mapper e o Reducer para o Hadoop:**
+
+```
 import java.io.IOException;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
@@ -145,33 +187,47 @@ public class WordCount {
         System.exit(job.waitForCompletion(true) ? 0 : 1);
     }
 }
-Compilar o programa Java: Compile o código WordCount.java com o Hadoop:
+```
+<br></br>
 
-bash
-Copiar código
+- **Compilar o programa Java:** Compile o código WordCount.java com o Hadoop:
+
+```
 javac -classpath `hadoop classpath` -d . WordCount.java
-Em seguida, crie o arquivo JAR do programa:
+```
+<br></br>
 
-bash
-Copiar código
+- **Em seguida, crie o arquivo JAR do programa:**
+
+```
 jar -cvf wordcount.jar -C . .
-Passo 5: Executar o programa no Hadoop
-Agora que o programa está pronto, vamos rodá-lo no Hadoop.
+```
+<br></br>
 
-Executar o programa Word Count: Execute o programa, passando o diretório de entrada (/input) e o diretório de saída (/output):
+<br>6. Executar o programa no Hadoop
 
-bash
-Copiar código
+Agora que o programa está pronto, vamos rodá-lo no Hadoop.<br></br>
+
+- **Executar o programa Word Count:** Execute o programa, passando o diretório de entrada (/input) e o diretório de saída (/output).
+
+```
 hadoop jar wordcount.jar WordCount /input /output
-Verificar os resultados: Depois que o job terminar, visualize a saída com o seguinte comando:
+```
+<br></br>
 
-bash
-Copiar código
+- **Verificar os resultados:** Depois que o job terminar, visualize a saída com o seguinte comando.
+
+```
 hdfs dfs -cat /output/part-r-00000
-Isso exibirá a contagem de cada palavra do arquivo input.txt.
+```
 
-Conclusão
-Com este tutorial, você aprendeu a configurar o Hadoop no Ubuntu, a carregar dados no HDFS e a criar uma aplicação simples de contagem de palavras usando o modelo MapReduce. Esse exemplo pode ser expandido para processar conjuntos de dados maiores, e o mesmo conceito pode ser aplicado a problemas de Big Data mais complexos.
+Isso exibirá a contagem de cada palavra do arquivo **input.txt**.<br></br>
+
+# Conclusão
+
+Com este tutorial, você aprendeu a configurar o Hadoop no Ubuntu, a carregar dados no HDFS e a criar uma aplicação simples de contagem de palavras usando o modelo MapReduce. 
+
+Esse exemplo pode ser expandido para processar conjuntos de dados maiores, e o mesmo conceito pode ser aplicado a problemas de Big Data mais complexos.
 
 Agora você está pronto para mostrar essa aplicação para outras pessoas e ajudar a disseminar o conhecimento sobre Big Data!
 
@@ -182,93 +238,12 @@ Espero que esse tutorial seja útil para você e para outros interessados em apr
 
 
 
-Você disse:
-Você pediu para eu acessar o arquivo da seguinte forma: nano ~/.bashrc
-
-Eu gostaria de usar o vim ao invés do nano, eu posso? Como eu faço para baixar e usar o vim?
-O ChatGPT disse:
-ChatGPT
-Memória atualizada
-Sim, você pode usar o vim em vez do nano! Para instalar e usar o vim no Ubuntu, siga os passos abaixo:
-
-1. Instalar o vim
-Abra o terminal e execute o comando:
-
-bash
-Copiar código
-sudo apt update
-sudo apt install vim
-2. Usar o vim para editar arquivos
-Agora, para editar o arquivo .bashrc, você pode usar o seguinte comando:
-
-bash
-Copiar código
-vim ~/.bashrc
-3. Como usar o vim (comandos básicos):
-Pressione i para entrar no modo de inserção e editar o arquivo.
-Quando terminar a edição, pressione Esc para sair do modo de inserção.
-Para salvar o arquivo, digite
-e pressione Enter.
-Para sair do vim, digite
-e pressione Enter.
-Se quiser salvar e sair ao mesmo tempo, pode usar
-.
-
-Agora você está pronto para usar o vim no lugar do nano!
 
 
 
 
 
 
-Você disse:
-Você pediu para eu fazer isso:
-
-Substitua /caminho/para/hadoop-3.3.6 pelo diretório onde você extraiu o Hadoop. Em seguida, salve o arquivo e feche o editor.
-
-Eu fiz o comando pwd e resultou isso: /home/rarysson/hadoop-3.3.6
-
-Então no caso eu adicionaria no final do arquivo da seguinte forma?
-
-export HADOOP_HOME=/home/rarysson/hadoop-3.3.6
-export PATH=$PATH:$HADOOP_HOME/bin
-O ChatGPT disse:
-ChatGPT
-Isso mesmo! Você pode adicionar as seguintes linhas no final do arquivo .bashrc com o caminho correto que você obteve:
-
-bash
-Copiar código
-export HADOOP_HOME=/home/rarysson/hadoop-3.3.6
-export PATH=$PATH:$HADOOP_HOME/bin
-Após adicionar essas linhas, salve e feche o arquivo no vim. Para que as alterações tenham efeito, execute o comando:
-
-bash
-Copiar código
-source ~/.bashrc
-Isso aplicará as novas configurações do ambiente. Agora, o Hadoop estará acessível a partir de qualquer diretório no terminal!
-
-
-
-
-
-
-Você disse:
-Você pediu para eu executar o seguinte comando: hdfs dfs -mkdir /input
-
-Mas onde seria melhor eu criar esse diretório? Dentro da /home/rarysson? Ou dentro da própria /home? Poderia escolher o melhor lugar para cria-la?
-O ChatGPT disse:
-ChatGPT
-O comando hdfs dfs -mkdir /input está criando um diretório dentro do sistema de arquivos distribuído do Hadoop (HDFS), e não no seu sistema de arquivos local. Portanto, o caminho /input refere-se ao diretório no HDFS, que é o ambiente virtual onde o Hadoop gerencia seus dados.
-
-Melhor prática:
-Não há necessidade de criar o diretório input no seu sistema de arquivos local (ex: /home/rarysson). O HDFS gerencia os dados separadamente do seu sistema de arquivos local. Portanto, o comando que você está utilizando:
-
-bash
-Copiar código
-hdfs dfs -mkdir /input
-está criando o diretório dentro do HDFS para armazenar os dados que serão processados, e é uma prática comum usar o caminho raiz (/) do HDFS.
-
-Resumindo: não é necessário criar esse diretório no sistema de arquivos local. Ele será criado no HDFS, o que é ideal para rodar as operações distribuídas.
 
 
 
