@@ -98,14 +98,20 @@ O HDFS é o sistema de arquivos distribuído do Hadoop, onde você armazenará s
 hdfs dfs -mkdir /input
 ```
 
-***AVISO:*** O comando **"hdfs dfs -mkdir /input"** está criando um diretório dentro do sistema de arquivos distribuído do **Hadoop (HDFS)**, e não no seu sistema de arquivos local. Portanto, o caminho **/input** refere-se ao diretório no **HDFS**, que é o ambiente virtual onde o Hadoop gerencia seus dados.<br></br>
+***AVISO:*** O comando **"hdfs dfs -mkdir /input"** está criando um diretório dentro do sistema de arquivos distribuído do **Hadoop (HDFS)**, e não no seu sistema de arquivos local. Portanto, o caminho ***/input*** refere-se ao diretório no **HDFS**, que é o ambiente virtual onde o Hadoop gerencia seus dados.<br></br>
+
+- **Para ver os diretórios e arquivos dentro do HDFS:** Você pode usar comandos do Hadoop.
+
+```
+hdfs dfs -ls /
+```
+
+Este comando lista todos os diretórios e arquivos na raiz do **HDFS**. Você deve ver o diretório ***/input*** listado ali.<br></br>
 
 - **Criar um arquivo de entrada:** Vamos criar um arquivo de texto simples para usar no exemplo. No terminal, execute.
 
-```
-nano input.txt
-```
-<br></br>
+``nano input.txt`` ou ``vim input.txt``<br></br>
+
 
 - **Adicione o seguinte conteúdo ao arquivo:**
 
@@ -122,7 +128,24 @@ Salve e feche o arquivo.<br></br>
 ```
 hdfs dfs -put input.txt /input
 ```
-<br></br>
+
+Você copiou o arquivo ***input.txt*** do seu sistema de arquivos local (que estava no diretório do root) para o diretório ***/input*** no dentro do **Hadoop Distributed File System (HDFS)**.<br></br>
+
+- **Se quiser ver o que está dentro do diretório /input, você pode usar o comando:**
+
+```
+hdfs dfs -ls /input
+```
+
+Isso vai mostrar o conteúdo do diretório que você criou, uma vez que você comece a carregar arquivos nele.<br></br>
+
+- **Agora que o arquivo input.txt já foi transferido para o HDFS:** Você pode excluí-lo do diretório local, se não precisar mais dele:
+
+```
+rm input.txt
+```
+
+Isso vai remover o arquivo ***input.txt*** do seu sistema local, mas o arquivo continuará seguro no **HDFS**.<br></br>
 
 <br>5. **Criar a aplicação Word Count com Hadoop**
 
@@ -233,87 +256,7 @@ Agora você está pronto para mostrar essa aplicação para outras pessoas e aju
 
 Espero que esse tutorial seja útil para você e para outros interessados em aprender mais sobre Big Data! Se precisar de mais ajustes ou tiver dúvidas, estou à disposição.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Você disse:
-Consegui executar o comando: hdfs dfs -mkdir /input
-
-Eu sou um aluno em fase de aprendizado, por isso tenho muitas dúvidas. Onde eu encontro esse diretório /input que eu criei? Gostaria de ver ele aqui na minha tela por curiosidade.
-O ChatGPT disse:
-ChatGPT
-Ótimo, que bom que conseguiu criar o diretório no HDFS!
-
-No entanto, o diretório /input que você criou não está no sistema de arquivos local do seu Ubuntu, mas sim no sistema de arquivos distribuído do Hadoop, o HDFS. Isso significa que você não pode acessá-lo diretamente como faria com diretórios no sistema local, como os encontrados em /home/.
-
-Como visualizar o conteúdo do HDFS:
-Para ver os diretórios e arquivos dentro do HDFS, você pode usar comandos do Hadoop. Vamos listar o conteúdo do diretório raiz do HDFS para você ver o diretório /input que acabou de criar.
-
-Execute o seguinte comando:
-
-bash
-Copiar código
-hdfs dfs -ls /
-Este comando lista todos os diretórios e arquivos na raiz do HDFS. Você deve ver o diretório /input listado ali.
-
-Para ver o conteúdo do diretório /input:
-Se quiser ver o que está dentro do diretório /input, você pode usar o comando:
-
-bash
-Copiar código
-hdfs dfs -ls /input
-Isso vai mostrar o conteúdo do diretório que você criou, uma vez que você comece a carregar arquivos nele.
-
-Curiosidade:
-O HDFS é um sistema de arquivos separado que gerencia a distribuição e replicação de arquivos entre vários nós de um cluster Hadoop. Então, você sempre interage com ele através dos comandos hdfs dfs.
-
-Se tiver mais dúvidas ou quiser explorar mais funcionalidades, pode perguntar!
-
-
-
-
-
-
-Você disse:
-Eu fiz esse comando para jogar o arquivo input.txt para dentro do diretório input do Hadoop correto? 
-
-Mas ainda tem um input.txt no meu usuário root, eu posso excluir ele?
-O ChatGPT disse:
-ChatGPT
-Sim, você está correto! Quando você executou o comando:
-
-bash
-Copiar código
-hdfs dfs -put input.txt /input
-Isso copiou o arquivo input.txt do seu sistema de arquivos local (que estava no diretório do root) para o diretório /input no HDFS. O arquivo agora está dentro do Hadoop Distributed File System (HDFS).
-
-Sobre o arquivo no seu sistema local:
-Agora que o arquivo input.txt já foi transferido para o HDFS, você pode excluí-lo do diretório local, se não precisar mais dele. O arquivo que está no HDFS não será afetado.
-
-Para excluir o arquivo do seu diretório local (no sistema de arquivos do Linux), você pode usar o comando:
-
-bash
-Copiar código
-rm input.txt
-Isso vai remover o arquivo input.txt do seu sistema local, mas o arquivo continuará seguro no HDFS.
-
+# -------------------------------------------------------------------------------
 
 
 
