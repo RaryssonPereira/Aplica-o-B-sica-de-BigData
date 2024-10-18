@@ -256,9 +256,7 @@ Agora você está pronto para mostrar essa aplicação para outras pessoas e aju
 
 Espero que esse tutorial seja útil para você e para outros interessados em aprender mais sobre Big Data! Se precisar de mais ajustes ou tiver dúvidas, estou à disposição.
 
-# -------------------------------------------------------------------------------
-
-
+# ------------------------------------------------------------------------------
 
 
 
@@ -279,104 +277,6 @@ Criação e compilação do código Java — isso acontece no seu sistema de arq
 Execução do código Hadoop (MapReduce) — o Hadoop processa os dados armazenados no HDFS com base no código Java que você criou localmente.
 Então, ao criar WordCount.java usando vim, você está criando esse arquivo no diretório local.
 
-
-
-
-
-
-Você disse:
-Você me passou um código Java que define o Mapper e o Reducer para o Hadoop. O que seriam essas coisas? Porque precisamos delas? Poderia me explicar o código que você criou?
-O ChatGPT disse:
-ChatGPT
-Claro! O código Java que define o Mapper e o Reducer é fundamental para a arquitetura do Hadoop e do seu modelo de programação MapReduce. Vamos entender o que cada um faz e, em seguida, eu explicarei o código que você viu.
-
-O que é MapReduce?
-MapReduce é um modelo de programação que permite processar grandes volumes de dados em paralelo. Ele divide o trabalho em duas etapas principais:
-
-Map (Mapper): Esta etapa envolve o processamento inicial dos dados. O Mapper pega os dados de entrada e os transforma em pares de chave-valor. Por exemplo, em um programa de contagem de palavras, o Mapper recebe linhas de texto e emite pares onde a chave é uma palavra e o valor é o número 1.
-
-Reduce (Reducer): Após a etapa de mapeamento, os pares de chave-valor gerados pelos Mappers são agrupados por chave. O Reducer pega esses pares e os processa para produzir uma saída consolidada. No exemplo de contagem de palavras, o Reducer soma todos os valores (números 1) para cada palavra.
-
-Estrutura do Código
-Aqui está um breve resumo do código que você tem para o Word Count:
-
-java
-Copiar código
-import java.io.IOException;
-import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.io.IntWritable;
-import org.apache.hadoop.io.Text;
-import org.apache.hadoop.mapreduce.Job;
-import org.apache.hadoop.mapreduce.Mapper;
-import org.apache.hadoop.mapreduce.Reducer;
-import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
-import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
-Importações: Importamos as classes necessárias para o funcionamento do Hadoop e para a manipulação de dados.
-Mapper
-java
-Copiar código
-public static class TokenizerMapper extends Mapper<Object, Text, Text, IntWritable> {
-    private final static IntWritable one = new IntWritable(1);
-    private Text word = new Text();
-
-    public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
-        String[] words = value.toString().split("\\s+");
-        for (String w : words) {
-            word.set(w);
-            context.write(word, one);
-        }
-    }
-}
-TokenizerMapper: Esta classe estende a classe Mapper.
-map: O método map é onde a lógica de mapeamento ocorre. Recebe a entrada (uma linha de texto) e divide essa linha em palavras.
-String[] words = value.toString().split("\\s+");: Essa linha divide a linha de texto em um array de palavras com base nos espaços.
-context.write(word, one);: Para cada palavra, emite um par chave-valor onde a chave é a palavra e o valor é 1 (indicando que a palavra foi encontrada uma vez).
-Reducer
-java
-Copiar código
-public static class IntSumReducer extends Reducer<Text, IntWritable, Text, IntWritable> {
-    private IntWritable result = new IntWritable();
-
-    public void reduce(Text key, Iterable<IntWritable> values, Context context) throws IOException, InterruptedException {
-        int sum = 0;
-        for (IntWritable val : values) {
-            sum += val.get();
-        }
-        result.set(sum);
-        context.write(key, result);
-    }
-}
-IntSumReducer: Esta classe estende a classe Reducer.
-reduce: O método reduce é onde a lógica de redução ocorre. Recebe pares de chave-valor e soma os valores para cada chave.
-int sum = 0;: Inicializa uma variável para armazenar a soma.
-for (IntWritable val : values): Itera sobre os valores associados à chave (todas as ocorrências da palavra).
-result.set(sum);: Armazena a soma total para a palavra e emite o resultado.
-Main
-java
-Copiar código
-public static void main(String[] args) throws Exception {
-    Configuration conf = new Configuration();
-    Job job = Job.getInstance(conf, "word count");
-    job.setJarByClass(WordCount.class);
-    job.setMapperClass(TokenizerMapper.class);
-    job.setCombinerClass(IntSumReducer.class);
-    job.setReducerClass(IntSumReducer.class);
-    job.setOutputKeyClass(Text.class);
-    job.setOutputValueClass(IntWritable.class);
-    FileInputFormat.addInputPath(job, new Path(args[0]));
-    FileOutputFormat.setOutputPath(job, new Path(args[1]));
-    System.exit(job.waitForCompletion(true) ? 0 : 1);
-}
-main: O ponto de entrada da aplicação. Aqui, configuramos o job Hadoop, definimos as classes Mapper e Reducer, e configuramos as entradas e saídas do job.
-job.setMapperClass(TokenizerMapper.class);: Define a classe Mapper que será utilizada.
-job.setReducerClass(IntSumReducer.class);: Define a classe Reducer que será utilizada.
-FileInputFormat.addInputPath(...): Define o caminho do arquivo de entrada.
-FileOutputFormat.setOutputPath(...): Define onde os resultados da execução serão armazenados.
-Resumo
-Mapper: Divide a entrada em pares de chave-valor (palavra e contagem).
-Reducer: Agrupa esses pares por chave e agrega (soma) os valores.
-Essas duas etapas permitem que o Hadoop processe dados massivos de forma distribuída, fazendo uso eficaz de recursos computacionais. Se você tiver mais perguntas ou precisar de mais detalhes, fique à vontade para perguntar!
 
 
 
