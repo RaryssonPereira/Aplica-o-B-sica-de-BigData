@@ -151,9 +151,25 @@ Isso vai remover o arquivo ***input.txt*** do seu sistema local, mas o arquivo c
 
 Agora que temos o arquivo de entrada no HDFS, vamos criar uma aplicação que conta a frequência de cada palavra usando o modelo MapReduce.<br></br>
 
+- **Criando um Diretório para o Word Count:** Vammos criar um diretório para colocar nosso arquivo executável, assim ficará mais organizado e facilitará caso você queira modificar o Script.
+
+```
+mkdir bigdata_projeto
+```
+
+Depois de ter criado o diretório, acesse ele.
+
+```
+cd bigdata_projeto/
+```
+
+***AVISO:*** Você pode escolher o nome que dará para o diretório, escolhi **bigdata_projeto** apenas como exemplo.<br></br>
+
 - **Escrever o código Java para o Word Count:** Crie um arquivo Java para a aplicação de contagem de palavras.
 
-``nano WordCount.java`` ou ``vim WordCount.java``<br></br>
+``nano WordCount.java`` ou ``vim WordCount.java``
+
+***AVISO:*** Quando você criar o arquivo **WordCount.java**, esse arquivo será criado no diretório que você criou, e não no **Hadoop (HDFS)**. Ou seja, ele estará no diretório em que você estiver no momento em que executar o comando.<br></br>
 
 - **Cole o seguinte código Java, que define o Mapper e o Reducer para o Hadoop:**
 
@@ -213,7 +229,7 @@ public class WordCount {
 ```
 <br></br>
 
-- **Compilar o programa Java:** Compile o código WordCount.java com o Hadoop:
+- **Compilar o programa Java:** Compile o código WordCount.java com o Hadoop.
 
 ```
 javac -classpath `hadoop classpath` -d . WordCount.java
@@ -231,7 +247,7 @@ jar -cvf wordcount.jar -C . .
 
 Agora que o programa está pronto, vamos rodá-lo no Hadoop.<br></br>
 
-- **Executar o programa Word Count:** Execute o programa, passando o diretório de entrada (/input) e o diretório de saída (/output).
+- **Executar o programa Word Count:** Execute o programa, passando o diretório de entrada ***/input*** e o diretório de saída ***/output***.
 
 ```
 hadoop jar wordcount.jar WordCount /input /output
