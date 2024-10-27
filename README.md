@@ -272,7 +272,18 @@ Agora que o programa está pronto, vamos rodá-lo no Hadoop.<br></br>
 ```
 hadoop jar wordcount.jar WordCount /input /output
 ```
-<br></br>
+
+***Explicação do Comando:***
+
+**hadoop jar:** Este comando inicia a execução de um arquivo *JAR* que contém seu código Java compilado.
+
+**wordcount.jar:** Este é o arquivo *JAR* que você criou, contendo a lógica para contar palavras.
+
+**WordCount:** Este é o nome da classe principal que você definiu no seu código Java.
+
+**/input:** Este é o diretório no *HDFS* onde está o arquivo de entrada (*input.txt*) que você criou.
+
+**/output:** Este é o diretório onde o *Hadoop* irá armazenar os resultados da execução do programa.<br></br>
 
 - **Verificar os resultados:** Depois que o job terminar, visualize a saída com o seguinte comando.
 
@@ -281,6 +292,18 @@ hdfs dfs -cat /output/part-r-00000
 ```
 
 Isso exibirá a contagem de cada palavra do arquivo **input.txt**.<br></br>
+
+<br>7. **Objetivo da Aplicação Big Data**
+
+O objetivo dessa aplicação Big Data é demonstrar a capacidade do Hadoop de processar e analisar grandes volumes de dados de forma distribuída. O exemplo da contagem de palavras é um clássico no aprendizado sobre Big Data porque:<br></br>
+
+- **Simplicidade:** É fácil de entender e implementar.
+
+- **Fundamentos do MapReduce:** Introduz os conceitos de Map e Reduce. O Mapper divide a entrada (neste caso, o texto) em palavras e emite pares (palavra, 1). O Reducer pega todos os pares gerados pelo Mapper, agrupa-os pela palavra e soma os valores associados a cada palavra, resultando na contagem total.
+
+- **Compreendimento:** Essa aplicação serve como uma base para compreender como sistemas de Big Data podem lidar com dados em larga escala e realizar análises úteis. 
+
+- **Explorar Novas Possibilidades:** Com esse entendimento, você pode explorar outros casos de uso mais complexos e variados no contexto de Big Data.<br></br>
 
 # Conclusão
 
@@ -295,51 +318,6 @@ Espero que esse tutorial seja útil para você e para outros interessados em apr
 # ------------------------------------------------------------------------------
 
 
-
-
-
-Você disse:
-Você pediu para eu executar esse comando: hadoop jar wordcount.jar WordCount /input /output
-
-Ele executou o código que você criou que seria o wordcount.jar e gerou o resultado /output correto?
-
-Esse comando hdfs dfs -cat /output/part-r-00000 me mostra o resultado que gerou. Entretanto não entendi o resultado que gerou, poderia me explicar o resultado e qual o objetivo da aplicação BigData que você fez?
-
-root@rarysson-B550M-H:~# hdfs dfs -cat /output/part-r-00000
-Big	1
-Data	1
-Hadoop	3
-an	1
-datasets	1
-for	1
-framework	1
-is	2
-large	1
-open-source	1
-processes	1
-used	1
-widely	1
-O ChatGPT disse:
-ChatGPT
-Exatamente! Vamos revisar os pontos que você mencionou e analisar o resultado gerado pela sua aplicação de contagem de palavras no Hadoop.
-
-Comando Executado
-O comando que você executou:
-
-bash
-Copiar código
-
-hadoop jar wordcount.jar WordCount /input /output
-
-hadoop jar: Este comando inicia a execução de um arquivo JAR que contém seu código Java compilado.
-
-wordcount.jar: Este é o arquivo JAR que você criou, contendo a lógica para contar palavras.
-
-WordCount: Este é o nome da classe principal que você definiu no seu código Java.
-
-/input: Este é o diretório no HDFS onde está o arquivo de entrada (input.txt) que você criou.
-
-/output: Este é o diretório onde o Hadoop irá armazenar os resultados da execução do programa.
 
 Resultado do Comando hdfs dfs -cat /output/part-r-00000
 
@@ -369,14 +347,19 @@ Palavras: Cada palavra é listada na primeira coluna.
 
 Contagem: O número à direita de cada palavra indica quantas vezes essa palavra aparece no texto que você processou.
 
+
 Objetivo da Aplicação Big Data
 
 O objetivo dessa aplicação Big Data é demonstrar a capacidade do Hadoop de processar e analisar grandes volumes de dados de forma distribuída. O exemplo da contagem de palavras é um clássico no aprendizado sobre Big Data porque:
 
 Simplicidade: É fácil de entender e implementar.
+
 Fundamentos do MapReduce: Introduz os conceitos de Map e Reduce:
+
 Map: O Mapper divide a entrada (neste caso, o texto) em palavras e emite pares (palavra, 1).
+
 Reduce: O Reducer pega todos os pares gerados pelo Mapper, agrupa-os pela palavra e soma os valores associados a cada palavra, resultando na contagem total.
+
 Essa aplicação serve como uma base para compreender como sistemas de Big Data podem lidar com dados em larga escala e realizar análises úteis. Com esse entendimento, você pode explorar outros casos de uso mais complexos e variados no contexto de Big Data. Se você tiver mais perguntas ou quiser explorar mais sobre o Hadoop ou Big Data, fique à vontade para perguntar!
 
 
@@ -384,60 +367,56 @@ Essa aplicação serve como uma base para compreender como sistemas de Big Data 
 
 
 
-Você disse:
+
 Você disse que o número à direita de cada palavra indica quantas vezes essa palavra aparece no texto que você processou. Onde está esse texto? Eu posso altera-lo e escrever outro texto no lugar para eu poder executar ele? Posso fazer outros testes?
+
 O ChatGPT disse:
-ChatGPT
 Sim, você pode alterar o texto que está no arquivo input.txt e realizar novos testes! O texto original que você criou estava assim:
 
-kotlin
-Copiar código
 Hadoop is an open-source framework
 Hadoop is widely used for Big Data
 Hadoop processes large datasets
+
+
 Para Alterar o Texto
+
 Abra o arquivo input.txt para edição usando o vim (ou outro editor de sua preferência):
 
-bash
-Copiar código
 vim input.txt
 Altere o conteúdo do arquivo conforme sua necessidade. Você pode adicionar novas linhas, modificar o texto existente ou até mesmo remover algumas linhas.
 
 Exemplo de novo texto:
 
-kotlin
-Copiar código
 Big Data is transforming industries.
 Hadoop makes it easy to process large datasets.
 Learning Hadoop can be fun and insightful.
+
 Salve e feche o arquivo. No vim, você pode fazer isso pressionando Esc, digitando :wq, e pressionando Enter.
+
 
 Depois de Alterar o Texto
 Após atualizar o arquivo input.txt, você precisa repetir o processo de contagem de palavras para ver os novos resultados:
 
 Coloque o arquivo no HDFS novamente (apenas se você tiver removido o antigo):
 
-bash
-Copiar código
 hdfs dfs -put input.txt /input
+
 Execute o seu programa de contagem de palavras novamente:
 
-bash
-Copiar código
 hadoop jar wordcount.jar WordCount /input /output
+
+
 Verifique o resultado:
 
-bash
-Copiar código
 hdfs dfs -cat /output/part-r-00000
+
 Observações
 Vários Testes: Você pode fazer vários testes, alterando o texto no input.txt, executando o programa e visualizando os resultados quantas vezes quiser.
 
 Limpar Resultados Anteriores: Se você deseja executar testes com diferentes textos, pode ser uma boa ideia excluir os diretórios de saída anteriores. Para fazer isso, você pode usar o seguinte comando antes de executar seu código novamente:
 
-bash
-Copiar código
 hdfs dfs -rm -r /output
+
 Isso removerá o diretório /output existente, permitindo que você crie um novo diretório de saída ao executar o programa novamente.
 
 Sinta-se à vontade para experimentar! Se tiver mais perguntas ou precisar de ajuda, estou aqui para ajudar!
