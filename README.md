@@ -7,6 +7,7 @@ Este tutorial vai guiá-lo através do processo de instalação e configuração
   - Ter um sistema Ubuntu 24 LTS.
   - Acesso à linha de comando (Terminal).
   - Conhecimento básico de Java (opcional, mas recomendado).
+    
 
 <br>2.  **Atualizar o sistema e instalar o Java**
 
@@ -19,12 +20,14 @@ sudo apt update && sudo apt upgrade
 ```
 <br></br>
 
+
 - **Instale o Java (OpenJDK 11):** O Hadoop funciona bem com o *Java 11*, então vamos instalá-lo.
 
 ```
 sudo apt install openjdk-11-jdk
 ```
 <br></br>
+
 
 - **Verifique a instalação do Java:** Certifique-se de que o Java foi instalado corretamente.
 
@@ -33,6 +36,7 @@ java -version
 ```
 
 A saída deverá exibir algo como **"openjdk version 11.0.x"**.<br></br>
+
 
 <br>3. **Baixar e configurar o Hadoop**
 
@@ -45,6 +49,7 @@ wget https://dlcdn.apache.org/hadoop/common/hadoop-3.3.6/hadoop-3.3.6.tar.gz
 ```
 <br></br>
 
+
 - **Extrair o arquivo baixado:** Descompacte o arquivo para ter acesso ao conteúdo do *Hadoop*.
 
 ```
@@ -52,10 +57,12 @@ tar -xvzf hadoop-3.3.6.tar.gz
 ```
 <br></br>
 
+
 - **Configurar as variáveis de ambiente:** Agora, precisamos configurar as variáveis de ambiente para que o sistema saiba onde encontrar os binários do *Hadoop*. Abra o arquivo *.bashrc* no editor de texto.
 
 ``nano ~/.bashrc`` ou ``vim ~/.bashrc``<br></br>
 <br></br>
+
 
 - **Caso você não tenha o editor de texto  "vim" instalado:** Abra o terminal e execute o comando.
 
@@ -63,6 +70,7 @@ tar -xvzf hadoop-3.3.6.tar.gz
 sudo apt install vim
 ```
 <br></br>
+
 
 - **No final do arquivo, adicione as seguintes linhas:**
 
@@ -73,6 +81,7 @@ export PATH=$PATH:$HADOOP_HOME/bin
 
 Substitua ***/caminho/para/hadoop-3.3.6*** pelo diretório onde você extraiu o Hadoop (Exemplo:  /home/gustavo/hadoop-3.3.6). Em seguida, salve o arquivo e feche o editor.<br></br>
 
+
 - **Também devemos adicionar as seguintes linhas ao final do arquivo, substituindo pelo caminho correto do Java:**
 
 ```
@@ -81,12 +90,14 @@ export PATH=$PATH:$JAVA_HOME/bin
 ```
 <br></br>
 
+
 - **Atualizar as variáveis de ambiente:** Para aplicar as mudanças, execute o comando:
 
 ```
 source ~/.bashrc
 ```
 <br></br>
+
 
 <br>4. **Configurar o HDFS (Hadoop Distributed File System)**
 
@@ -100,6 +111,7 @@ hdfs dfs -mkdir /input
 
 ***AVISO:*** O comando **"hdfs dfs -mkdir /input"** está criando um diretório dentro do sistema de arquivos distribuído do **Hadoop (HDFS)**, e não no seu sistema de arquivos local. Portanto, o caminho ***/input*** refere-se ao diretório no **HDFS**, que é o ambiente virtual onde o Hadoop gerencia seus dados.<br></br>
 
+
 - **Para ver os diretórios e arquivos dentro do HDFS:** Você pode usar comandos do Hadoop.
 
 ```
@@ -108,9 +120,11 @@ hdfs dfs -ls /
 
 Este comando lista todos os diretórios e arquivos na raiz do **HDFS**. Você deve ver o diretório ***/input*** listado ali.<br></br>
 
+
 - **Criar um arquivo de entrada:** Vamos criar um arquivo de texto simples para usar no exemplo. No terminal, execute.
 
-``nano input.txt`` ou ``vim input.txt``<br></br>
+``nano input.txt`` ou ``vim input.txt``
+<br></br>
 
 
 - **Adicione o seguinte conteúdo ao arquivo:**
@@ -123,6 +137,7 @@ Hadoop processes large datasets
 
 Salve e feche o arquivo.<br></br>
 
+
 - **Enviar o arquivo para o HDFS:** Agora, coloque o arquivo no diretório de entrada do HDFS.
 
 ```
@@ -130,6 +145,7 @@ hdfs dfs -put input.txt /input
 ```
 
 Você copiou o arquivo ***input.txt*** do seu sistema de arquivos local (que estava no diretório do root) para o diretório ***/input*** no dentro do **Hadoop Distributed File System (HDFS)**.<br></br>
+
 
 - **Se quiser ver o que está dentro do diretório /input, você pode usar o comando:**
 
@@ -139,6 +155,7 @@ hdfs dfs -ls /input
 
 Isso vai mostrar o conteúdo do diretório que você criou, uma vez que você comece a carregar arquivos nele.<br></br>
 
+
 - **Agora que o arquivo input.txt já foi transferido para o HDFS:** Você pode excluí-lo do diretório local, se não precisar mais dele:
 
 ```
@@ -146,6 +163,7 @@ rm input.txt
 ```
 
 Isso vai remover o arquivo ***input.txt*** do seu sistema local, mas o arquivo continuará seguro no **HDFS**.<br></br>
+
 
 <br>5. **Criar a aplicação Word Count com Hadoop**
 
@@ -165,11 +183,13 @@ cd bigdata_projeto/
 
 ***AVISO:*** Você pode escolher o nome que dará para o diretório, escolhi **bigdata_projeto** apenas como exemplo.<br></br>
 
+
 - **Escrever o código Java para o Word Count:** Crie um arquivo Java para a aplicação de contagem de palavras.
 
 ``nano WordCount.java`` ou ``vim WordCount.java``
 
 ***AVISO:*** Quando você criar o arquivo **WordCount.java**, esse arquivo será criado no diretório que você criou, e não no **Hadoop (HDFS)**. Ou seja, ele estará no diretório em que você estiver no momento em que executar o comando, que no caso será **bigdata_projeto**.<br></br>
+
 
 - **Cole o seguinte código Java, que define o Mapper e o Reducer para o Hadoop:**
 
@@ -229,6 +249,7 @@ public class WordCount {
 ```
 <br></br>
 
+
 - **Compilar o programa Java:** Compile o código WordCount.java com o Hadoop.
 
 ```
@@ -244,6 +265,7 @@ javac -classpath `hadoop classpath` -d . WordCount.java
 **-d .:** O parâmetro *-d* especifica o diretório de saída onde os arquivos compilados devem ser armazenados. O ponto *.* indica que os arquivos compilados devem ser armazenados no diretório atual.
 
 **WordCount.java:** Este é o arquivo que está sendo compilado.<br></br>
+
 
 - **Em seguida, crie o arquivo JAR do programa:**
 
@@ -262,6 +284,7 @@ jar -cvf wordcount.jar -C . .
 **f:** Esse parâmetro serve para especificar o nome do arquivo *JAR* que será criado (neste caso, *wordcount.jar*).
 
 **-C . .:** O parâmetro *-C* muda o diretório para o especificado (aqui, *.* significa o diretório atual) e adiciona todos os arquivos encontrados neste diretório ao *JAR*. O segundo ponto *.* é para incluir todos os arquivos e subdiretórios do diretório atual.<br></br>
+
 
 <br>6. **Executar o programa no Hadoop**
 
@@ -285,13 +308,16 @@ hadoop jar wordcount.jar WordCount /input /output
 
 **/output:** Este é o diretório onde o *Hadoop* irá armazenar os resultados da execução do programa.<br></br>
 
+
 - **Verificar os resultados:** Depois que o job terminar, visualize a saída com o seguinte comando.
+  
 
 ```
 hdfs dfs -cat /output/part-r-00000
 ```
 
 Isso exibirá a contagem de cada palavra do arquivo **input.txt**.<br></br>
+
 
 <br>7. **Objetivo da Aplicação Big Data**
 
@@ -304,6 +330,7 @@ O objetivo dessa aplicação Big Data é demonstrar a capacidade do Hadoop de pr
 - **Compreendimento:** Essa aplicação serve como uma base para compreender como sistemas de Big Data podem lidar com dados em larga escala e realizar análises úteis. 
 
 - **Explorar Novas Possibilidades:** Com esse entendimento, você pode explorar outros casos de uso mais complexos e variados no contexto de Big Data.<br></br>
+
 
 # Conclusão
 
