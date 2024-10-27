@@ -34,7 +34,7 @@ java -version
 
 A saída deverá exibir algo como **"openjdk version 11.0.x"**.<br></br>
 
-3. **Baixar e configurar o Hadoop**
+<br>3. **Baixar e configurar o Hadoop**
 
 Agora vamos instalar o *Hadoop*. Para este exemplo, utilizaremos a versão mais recente disponível.<br></br>
 
@@ -88,7 +88,7 @@ source ~/.bashrc
 ```
 <br></br>
 
-4. **Configurar o HDFS (Hadoop Distributed File System)**
+<br>4. **Configurar o HDFS (Hadoop Distributed File System)**
 
 O HDFS é o sistema de arquivos distribuído do Hadoop, onde você armazenará seus dados para processamento.<br></br>
 
@@ -151,7 +151,7 @@ Isso vai remover o arquivo ***input.txt*** do seu sistema local, mas o arquivo c
 
 Agora que temos o arquivo de entrada no HDFS, vamos criar uma aplicação que conta a frequência de cada palavra usando o modelo MapReduce.<br></br>
 
-- **Criando um Diretório para o Word Count:** Vammos criar um diretório para colocar nosso arquivo executável, assim ficará mais organizado e facilitará caso você queira modificar o Script.
+- **Criando um Diretório para o Word Count:** Vamos criar um diretório para colocar nosso arquivo executável, assim ficará mais organizado e facilitará caso você queira modificar o Script.
 
 ```
 mkdir bigdata_projeto
@@ -169,7 +169,7 @@ cd bigdata_projeto/
 
 ``nano WordCount.java`` ou ``vim WordCount.java``
 
-***AVISO:*** Quando você criar o arquivo **WordCount.java**, esse arquivo será criado no diretório que você criou, e não no **Hadoop (HDFS)**. Ou seja, ele estará no diretório em que você estiver no momento em que executar o comando.<br></br>
+***AVISO:*** Quando você criar o arquivo **WordCount.java**, esse arquivo será criado no diretório que você criou, e não no **Hadoop (HDFS)**. Ou seja, ele estará no diretório em que você estiver no momento em que executar o comando, que no caso será **bigdata_projeto**.<br></br>
 
 - **Cole o seguinte código Java, que define o Mapper e o Reducer para o Hadoop:**
 
@@ -234,16 +234,36 @@ public class WordCount {
 ```
 javac -classpath `hadoop classpath` -d . WordCount.java
 ```
-<br></br>
+
+***Explicação do Comando:***
+
+**javac:** Este é o compilador Java, que transforma o código fonte Java (neste caso, *WordCount.java*) em bytecode que pode ser executado pela *Java Virtual Machine (JVM)*.
+
+**-classpath hadoop classpath:** O parâmetro *-classpath* especifica onde o compilador deve procurar as classes necessárias. O comando *hadoop classpath* fornece todos os caminhos de bibliotecas do Hadoop que você precisa para compilar seu código. Assim, ele garante que o código tenha acesso a todas as classes do Hadoop necessárias durante a compilação.
+
+**-d .:** O parâmetro *-d* especifica o diretório de saída onde os arquivos compilados devem ser armazenados. O ponto *.* indica que os arquivos compilados devem ser armazenados no diretório atual.
+
+**WordCount.java:** Este é o arquivo que está sendo compilado.<br></br>
 
 - **Em seguida, crie o arquivo JAR do programa:**
 
 ```
 jar -cvf wordcount.jar -C . .
 ```
-<br></br>
 
-<br>6. Executar o programa no Hadoop
+***Explicação do Comando:***
+
+**jar:** Este é um utilitário para criar arquivos *JAR (Java Archive)*. Um arquivo *JAR* é uma forma de empacotar vários arquivos em um único arquivo, que pode ser executado na *JVM*.
+
+**c:** Esse parâmetro serve para criar um novo arquivo *JAR*.
+
+**v:** Esse parâmetro serve para exibir informações detalhadas durante o processo de criação (verbose).
+
+**f:** Esse parâmetro serve para especificar o nome do arquivo *JAR* que será criado (neste caso, *wordcount.jar*).
+
+**-C . .:** O parâmetro *-C* muda o diretório para o especificado (aqui, *.* significa o diretório atual) e adiciona todos os arquivos encontrados neste diretório ao *JAR*. O segundo ponto *.* é para incluir todos os arquivos e subdiretórios do diretório atual.<br></br>
+
+<br>6. **Executar o programa no Hadoop**
 
 Agora que o programa está pronto, vamos rodá-lo no Hadoop.<br></br>
 
@@ -273,67 +293,6 @@ Agora você está pronto para mostrar essa aplicação para outras pessoas e aju
 Espero que esse tutorial seja útil para você e para outros interessados em aprender mais sobre Big Data! Se precisar de mais ajustes ou tiver dúvidas, estou à disposição.
 
 # ------------------------------------------------------------------------------
-
-
-
-Você disse:
-Você pediu para eu executar o seguinte comando: nano WordCount.java
-
-Eu executarei o comando vim WordCount.java pois eu prefiro o vim do que o nano.
-
-Esse arquivo será criado dentro do Hadoop também? Ou será dentro do meu sistema local? 
-O ChatGPT disse:
-ChatGPT
-Memória atualizada
-Quando você criar o arquivo WordCount.java com o comando vim WordCount.java, esse arquivo será criado no seu sistema de arquivos local, e não no Hadoop (HDFS). Ou seja, ele estará no diretório em que você estiver no momento em que executar o comando.
-
-O Hadoop executa o código Java a partir do sistema local, mas os dados que ele processa (como o arquivo input.txt) estão no HDFS. O fluxo é assim:
-
-Criação e compilação do código Java — isso acontece no seu sistema de arquivos local.
-Execução do código Hadoop (MapReduce) — o Hadoop processa os dados armazenados no HDFS com base no código Java que você criou localmente.
-Então, ao criar WordCount.java usando vim, você está criando esse arquivo no diretório local.
-
-
-
-
-
-
-
-Você disse:
-Você pediu para eu executar o seguinte comando: javac -classpath hadoop classpath -d . WordCount.java
-
-Que seria para o Hadoop ler o código que criamos e guarda-lo correto?
-
-Depois você pediu para eu rodar esse comando: jar -cvf wordcount.jar -C . .
-
-Que seria para transformar o arquivo que está no Hadoop em um executável Java, que seria o Jar correto?
-O ChatGPT disse:
-ChatGPT
-Exatamente! Vamos detalhar cada um desses comandos para esclarecer melhor:
-
-Compilação do Código Java
-bash
-Copiar código
-javac -classpath `hadoop classpath` -d . WordCount.java
-javac: Este é o compilador Java, que transforma o código fonte Java (neste caso, WordCount.java) em bytecode que pode ser executado pela Java Virtual Machine (JVM).
--classpath hadoop classpath: O parâmetro -classpath especifica onde o compilador deve procurar as classes necessárias. O comando hadoop classpath fornece todos os caminhos de bibliotecas do Hadoop que você precisa para compilar seu código. Assim, ele garante que o código tenha acesso a todas as classes do Hadoop necessárias durante a compilação.
--d .: O parâmetro -d especifica o diretório de saída onde os arquivos compilados devem ser armazenados. O ponto . indica que os arquivos compilados devem ser armazenados no diretório atual.
-WordCount.java: Este é o arquivo que está sendo compilado.
-Criação do JAR Executável
-bash
-Copiar código
-jar -cvf wordcount.jar -C . .
-jar: Este é um utilitário para criar arquivos JAR (Java Archive). Um arquivo JAR é uma forma de empacotar vários arquivos em um único arquivo, que pode ser executado na JVM.
--cvf: Esses parâmetros significam:
-c: Criar um novo arquivo JAR.
-v: Exibir informações detalhadas durante o processo de criação (verbose).
-f: Especificar o nome do arquivo JAR que será criado (neste caso, wordcount.jar).
--C . .: O parâmetro -C muda o diretório para o especificado (aqui, . significa o diretório atual) e adiciona todos os arquivos encontrados neste diretório ao JAR. O segundo ponto . é para incluir todos os arquivos e subdiretórios do diretório atual.
-Resumo
-O primeiro comando compila seu código Java e o prepara para execução, armazenando os arquivos compilados no diretório atual.
-O segundo comando empacota esses arquivos compilados em um arquivo JAR executável, que você pode rodar no Hadoop.
-Após executar esses comandos, você terá um arquivo wordcount.jar que pode ser executado no Hadoop, permitindo que você processe os dados de acordo com a lógica definida no seu código. Se você tiver mais perguntas, estou aqui para ajudar!
-
 
 
 
@@ -369,25 +328,29 @@ O comando que você executou:
 
 bash
 Copiar código
+
 hadoop jar wordcount.jar WordCount /input /output
+
 hadoop jar: Este comando inicia a execução de um arquivo JAR que contém seu código Java compilado.
+
 wordcount.jar: Este é o arquivo JAR que você criou, contendo a lógica para contar palavras.
+
 WordCount: Este é o nome da classe principal que você definiu no seu código Java.
+
 /input: Este é o diretório no HDFS onde está o arquivo de entrada (input.txt) que você criou.
+
 /output: Este é o diretório onde o Hadoop irá armazenar os resultados da execução do programa.
+
 Resultado do Comando hdfs dfs -cat /output/part-r-00000
+
 O comando que você usou para visualizar o resultado:
 
-bash
-Copiar código
 hdfs dfs -cat /output/part-r-00000
 Este comando mostra o conteúdo do arquivo de saída gerado pelo seu programa. O que você obteve é uma contagem de palavras, onde cada linha representa uma palavra do arquivo de entrada e o número correspondente de vezes que essa palavra aparece.
 
 Explicação do Resultado
 Aqui está o resultado que você obteve:
 
-kotlin
-Copiar código
 Big	1
 Data	1
 Hadoop	3
@@ -401,9 +364,13 @@ open-source	1
 processes	1
 used	1
 widely	1
+
 Palavras: Cada palavra é listada na primeira coluna.
+
 Contagem: O número à direita de cada palavra indica quantas vezes essa palavra aparece no texto que você processou.
+
 Objetivo da Aplicação Big Data
+
 O objetivo dessa aplicação Big Data é demonstrar a capacidade do Hadoop de processar e analisar grandes volumes de dados de forma distribuída. O exemplo da contagem de palavras é um clássico no aprendizado sobre Big Data porque:
 
 Simplicidade: É fácil de entender e implementar.
