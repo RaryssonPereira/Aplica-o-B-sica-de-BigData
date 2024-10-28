@@ -479,3 +479,41 @@ Isso removerá o diretório /output existente, permitindo que você crie um novo
 Sinta-se à vontade para experimentar! Se tiver mais perguntas ou precisar de ajuda, estou aqui para ajudar!
 
 
+
+root@rarysson-B550M-H:~/bigdata_Rarysson# hdfs dfs -cat /output/part-r-00000
+cat: /output/part-r-00000': No such file or directory
+root@rarysson-B550M-H:~/bigdata_Rarysson# 
+
+Está gerando esse erro, pq?
+O ChatGPT disse:
+ChatGPT
+Esse erro ocorre porque o arquivo /output/part-r-00000 não existe no HDFS. Isso pode acontecer por algumas razões:
+
+Possíveis Causas:
+A execução do job falhou: O job Hadoop que gera o arquivo de saída pode não ter sido executado corretamente, ou ter falhado, e, por isso, o arquivo de saída não foi criado.
+
+O diretório de saída está vazio: Não há arquivos gerados no diretório /output, talvez porque o diretório foi criado, mas nada foi gravado ali.
+
+Diretório de saída foi substituído: Se o diretório /output já existia de uma execução anterior e não foi removido antes de uma nova execução, o Hadoop pode não ter criado os arquivos de saída por questões de segurança para não sobrescrever dados.
+
+Como resolver:
+Verifique se há algum conteúdo no diretório /output: Rode o comando abaixo para listar os arquivos no diretório /output:
+
+bash
+Copiar código
+hdfs dfs -ls /output
+Isso vai te mostrar se existem arquivos de saída. Se não houver, é possível que a aplicação não tenha gerado o resultado corretamente.
+
+Remova o diretório de saída e execute o job novamente: Para garantir que não há conflitos de saídas anteriores, remova o diretório /output e execute sua aplicação novamente:
+
+bash
+Copiar código
+hdfs dfs -rm -r /output
+Em seguida, rode novamente o comando para executar sua aplicação:
+
+bash
+Copiar código
+hadoop jar Wordcount.jar input /output
+Verifique os logs da execução do Hadoop: Se o job falhou, você pode verificar os logs para entender o que aconteceu. Esses logs podem fornecer informações detalhadas sobre possíveis erros durante a execução.
+
+Após reexecutar o job, você deve conseguir visualizar os arquivos de saída no diretório /output e rodar o comando hdfs dfs -cat /output/part-r-00000.
